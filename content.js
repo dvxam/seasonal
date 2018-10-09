@@ -1,7 +1,7 @@
 (function () {
     console.log('Chrome Extension ready to go.');
 
-    var textTagNames = [
+    const textTagNames = [
         'p',
         'label',
         'h1',
@@ -12,14 +12,38 @@
         'h6'
     ];
 
-    for (tagName of textTagNames) {
-        for (p of document.getElementsByTagName(tagName)) {
-            if (/courgette/ig.test(p.textContent)) {
-                p.innerHTML = p.textContent.replace(
-                    /courgette/ig,
-                    '<span style="color: #ff0000">courgette</span>'
-                );
+    const words = [
+        'courgette',
+        'courgettes'
+    ];
+
+    const firstMatch = (words, content) =>
+        words
+            .sort((b, a) => a.length - b.length)
+            .map(w => ({ word: w, regex: new RegExp(w, "ig") }))
+            .find(({ regex }) => regex.test(content)) || {};
+
+    const wrapWithSpan = (word, color) => {
+        var span = document.createElement("SPAN");
+        span.textContent = word;
+        span.style['color'] = color;
+        return span;
+    };
+
+    const insertSpanToReplaceWord = (content, regex, span) =>
+        content.innerHTML = content.textContent.replace(regex, span.outerHTML);
+
+    const forEachTag = (tagNames, callback) => {
+        for (tagName of tagNames) {
+            for (tag of document.getElementsByTagName(tagName)) {
+                callback(tag);
             }
         }
     }
+
+    forEachTag(textTagNames, (tag) => {
+        var { word, regex } = firstMatch(words, tag.textContent);
+        if (word)
+            insertSpanToReplaceWord(tag, regex, wrapWithSpan(word, '#ff0000'));
+    });
 })();
