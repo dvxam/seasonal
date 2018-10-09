@@ -12,6 +12,8 @@
     "build:sources": "parcel build src/content.ts --no-source-maps",
     "build:manifest": "cp manifest.json dist",
     "clean": "rm -rf dist",
+    "lint": "tslint ./src/**/*.ts ./spec/**/*.ts",
+    "lint:fix": "yarn run lint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "watch": "parcel watch src/content.ts"
@@ -21,6 +23,7 @@
     "jest": "^23.6.0",
     "parcel": "^1.10.2",
     "ts-jest": "^23.10.4",
+    "tslint": "^5.11.0",
     "typescript": "^3.1.1"
   }
 }

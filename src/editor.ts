@@ -1,4 +1,4 @@
-import { Matcher } from './matcher';
+import { Matcher } from "./matcher";
 
 export namespace Editor {
     export function wrapWordWithColorSpan(match: Matcher.WordMatch, color: string, content: string): string {
@@ -6,9 +6,9 @@ export namespace Editor {
     }
 
     const wrapWithSpan = (word: string, color: string): string => {
-        var span = document.createElement("SPAN");
+        const span = document.createElement("SPAN");
         span.textContent = word;
-        span.style['color'] = color;
+        span.style.color = color;
         return span.outerHTML;
     };
 }
