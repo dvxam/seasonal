@@ -1,49 +1,39 @@
-(function () {
-    console.log('Chrome Extension ready to go.');
+import { Matcher } from './matcher';
+import { Editor } from './editor';
 
-    const textTagNames = [
-        'p',
-        'label',
-        'h1',
-        'h2',
-        'h3',
-        'h4',
-        'h5',
-        'h6'
-    ];
+const { firstMatch } = Matcher;
+const { wrapWordWithColorSpan } = Editor;
 
-    const words = [
-        'courgette',
-        'courgettes'
-    ];
+const textTagNames = [
+    'p',
+    'a',
+    'label',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6'
+];
 
-    const firstMatch = (words, content) =>
-        words
-            .sort((b, a) => a.length - b.length)
-            .map(w => ({ word: w, regex: new RegExp(w, "ig") }))
-            .find(({ regex }) => regex.test(content)) || {};
+const words = [
+    'courgette',
+    'courgettes'
+];
 
-    const wrapWithSpan = (word, color) => {
-        var span = document.createElement("SPAN");
-        span.textContent = word;
-        span.style['color'] = color;
-        return span;
-    };
-
-    const insertSpanToReplaceWord = (content, regex, span) =>
-        content.innerHTML = content.textContent.replace(regex, span.outerHTML);
-
-    const forEachTag = (tagNames, callback) => {
-        for (const tagName of tagNames) {
-            for (const tag of document.getElementsByTagName(tagName)) {
-                callback(tag);
-            }
+const forEachTag = (tagNames, callback) => {
+    for (const tagName of tagNames) {
+        const tags = document.getElementsByTagName(tagName);
+        for (var i = 0; i < tags.length; i++) {
+            callback(tags[i]);
         }
     }
+}
 
-    forEachTag(textTagNames, (tag) => {
-        var { word, regex } = firstMatch(words, tag.textContent);
-        if (word)
-            insertSpanToReplaceWord(tag, regex, wrapWithSpan(word, '#ff0000'));
-    });
-})();
+forEachTag(textTagNames, (tag: HTMLElement) => {
+    var match = firstMatch(words, tag.textContent);
+    if (match.word) {
+        const innerHTML = wrapWordWithColorSpan(match, '#FF0000', tag.innerHTML);
+        tag.innerHTML = innerHTML;
+    }
+});

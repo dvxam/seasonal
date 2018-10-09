@@ -12,10 +12,15 @@
     "build:sources": "parcel build src/content.ts --no-source-maps",
     "build:manifest": "cp manifest.json dist",
     "clean": "rm -rf dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "watch": "parcel watch src/content.ts"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.4",
+    "jest": "^23.6.0",
     "parcel": "^1.10.2",
+    "ts-jest": "^23.10.4",
     "typescript": "^3.1.1"
   }
 }
