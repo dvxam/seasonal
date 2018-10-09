@@ -34,8 +34,8 @@
         content.innerHTML = content.textContent.replace(regex, span.outerHTML);
 
     const forEachTag = (tagNames, callback) => {
-        for (tagName of tagNames) {
-            for (tag of document.getElementsByTagName(tagName)) {
+        for (const tagName of tagNames) {
+            for (const tag of document.getElementsByTagName(tagName)) {
                 callback(tag);
             }
         }
